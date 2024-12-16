@@ -10,7 +10,7 @@ import asyncio, threading
 API_ENDPOINT = "https://discord.com/api/v10"
 CLIENT_ID = "1293198029654065182"
 CLIENT_SECRET = os.environ["CLIENT_SECRET"]
-REDIRECT_URI = "https://carlleonador03.pythonanywhere.com/authorize"
+REDIRECT_URI = "https://mutualfind.koyeb.app/authorize"
 
 app = Flask(__name__)
 
