@@ -92,4 +92,4 @@ def bot_start(loop):
 
 loop = asyncio.get_event_loop()
 bot_start(loop)
-app.run(host="localhost", port=8080)
+app.run()
