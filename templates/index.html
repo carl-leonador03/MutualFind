@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MutualFind</title>
+        <script type="text/javascript">
+            var authWin;
+            var authTimer;
+            function openAuthWin() {
+                authWin = window.open('{{ url_for("auth") }}', 'Authorize', 'width=616,height=770');
+                authTimer = setInterval( function() {
+                    if (authWin.closed) {
+                        clearInterval(authTimer);
+                        isAuthorized();
+                    }
+                },
+                1000 );
+            }
+
+            function isAuthorized() {
+                console.log(window.atob(document.cookie.split(";")[document.cookie.split(";").length - 1].split("=")[1]));
+            }
+
+            function getCode(result) {
+                document.cookie = "result=" + result;
+                console.log(result);
+            }
+
+            /* function isAuthorized() {
+                let result = window.atob(document.cookie.split(";")[document.cookie.split(";").length - 1].split("=")[1]);
+                if (result != undefined) {
+                    let user_guilds = fetch(
+                        "https://discord.com/api/v10/users/@me/guilds",
+                        {
+                            method: "GET",
+                            headers: {
+                                "Authorization": result,
+                                "Content-Type": "application/json"
+                            }
+                        }
+                    ).then((response) => response.json())
+
+                    let guild_select = document.getElementById("guild_select");
+
+                    for (var guild of user_guilds) {
+                        let guild_option = document.createElement("select");
+                        guild_option.value = guild.id;
+                        guild_option.text = 
+                    }
+                }
+            } */
+        </script>
+    </head>
+    <body>
+        <button onClick="openAuthWin();">Authorize</button>
+        <div id="guild_select_div">
+            <select name="guilds" id="guild_select"></select>
+        </div>
+    </body>
+</html>
