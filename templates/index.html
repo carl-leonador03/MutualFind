@@ -17,9 +17,10 @@
             }
 
             function isAuthorized() {
-                let result = window.atob(document.cookie.split(";")[document.cookie.split(";").length - 1].split("=")[1]);
-                if (!result.includes("")) {
-                    result = result.replace("'", "\"");
+                let result = document.cookie.split(";")[document.cookie.split(";").length - 1].split("=")[1];
+                if (result != null) {
+                    result = window.atob(result);
+                    result = result.replaceAll("'", "\"");
                     let json_data = JSON.parse(result);
                     console.log(json_data);
                     return true;
