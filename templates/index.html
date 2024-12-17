@@ -17,12 +17,23 @@
             }
 
             function isAuthorized() {
-                console.log(window.atob(document.cookie.split(";")[document.cookie.split(";").length - 1].split("=")[1]));
+                let result = window.atob(document.cookie.split(";")[document.cookie.split(";").length - 1].split("=")[1]);
+                if (!result.includes("")) {
+                    result = result.replace("'", "\"");
+                    let json_data = JSON.parse(result);
+                    console.log(json_data);
+                    return true;
+                }
+                else {
+                    return false;
+                }
+                
             }
 
             function getCode(result) {
-                document.cookie = "result=" + result;
-                console.log(result);
+                let code = result.replace("b'", "").replace("'", "")
+                document.cookie = "result=" + code;
+                console.log(code);
             }
 
             /* function isAuthorized() {
