@@ -80,7 +80,7 @@ def fetch():
         elif "bot_token" in request.args:
             if "result" in request.cookies.keys():
                 if loads(str(b64d(request.cookies["result"]), encoding="utf-8").replace("'", "\""))["access_token"]:
-                    return jsonify({"BOT_TOKEN", os.environ["BOT_TOKEN"]})
+                    return jsonify({"BOT_TOKEN": os.environ["BOT_TOKEN"]})
                 else:
                     return jsonify({"Forbidden": 403})
             else:
