@@ -2,6 +2,7 @@ import requests
 from base64 import b64decode as b64d, b64encode as b64e
 
 from flask import Flask, request, jsonify, render_template, make_response, redirect, url_for
+from json import loads
 
 import os
 import bot
@@ -67,15 +68,24 @@ def auth():
     else:
         return make_response("Forbidden", 403)
 
-@app.route("/fetch", methods=["POST"])
+@app.route("/fetch", methods=["GET"])
 def fetch():
-    if request.method == "POST":
+    if request.method == "GET":
         if "guild_id" in request.args:
-
             task = asyncio.run_coroutine_threadsafe(bot.get_members(request.args["guild_id"]), loop)
             result = task.result()
 
             return jsonify(result)
+        
+        elif "bot_token" in request.args:
+            if "result" in request.cookies.keys():
+                if loads(str(b64d(request.cookies["result"]), encoding="utf-8").replace("'", "\""))["access_token"]:
+                    return jsonify({"BOT_TOKEN", os.environ["BOT_TOKEN"]})
+                else:
+                    return jsonify({"Forbidden": 403})
+            else:
+                return jsonify({"Forbidden": 403})
+        
         else:
             return jsonify({"Missing argument": "guild_id not given."})
     

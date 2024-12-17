@@ -5,6 +5,7 @@
         <script type="text/javascript">
             var authWin;
             var authTimer;
+            var result_data;
             function openAuthWin() {
                 authWin = window.open('{{ url_for("auth") }}', 'Authorize', 'width=616,height=770');
                 authTimer = setInterval( function() {
@@ -21,14 +22,69 @@
                 if (result != null) {
                     result = window.atob(result);
                     result = result.replaceAll("'", "\"");
-                    let json_data = JSON.parse(result);
-                    console.log(json_data);
+                    result_data = JSON.parse(result);
+                    console.log("Authorized");
+
+                    getGuilds(result_data);
+
                     return true;
                 }
                 else {
                     return false;
                 }
                 
+            }
+
+            function getGuilds(result_data) {
+                let user_guilds = fetch(
+                    "https://discord.com/api/v10/users/@me/guilds",
+                    {
+                        method: "GET",
+                        headers: {
+                            "Authentication": "Bearer " + result_data,
+                            "Content-Type": "application/json"
+                        }
+                    }
+                ).then((response) => response.json());
+
+                let bot_token = fetch(
+                    "{{ url_for('fetch') }}" + "?bot_token",
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    }
+                ).then((response) => response.json()["BOT_TOKEN"]);
+
+                let bot_guilds = fetch(
+                    "https://discord.com/api/v10/users/@me/guilds",
+                    {
+                        method: "GET",
+                        headers: {
+                            "Authentication": "Bot " + bot_token,
+                            "Content-Type": "application/json"
+                        }
+                    }
+                ).then(
+                    (response) => response.json()
+                )
+
+                bot_guilds = bot_guilds.map((x) => {return x.id;});
+
+                let guild_select = document.getElementById("guild_select");
+
+                for (let guild of user_guilds) {
+                    let guild_option = document.createElement("select");
+                    guild_option.value = guild.id;
+                    guild_option.text = guild.name;
+                    if (!bot_guilds.includes(guild.id)) {
+                        guild_option.disabled = true;
+                    }
+                    guild_select.appendChild(guild_option);
+                }
+
+                return "done";
             }
 
             function getCode(result) {
