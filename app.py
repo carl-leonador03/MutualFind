@@ -62,7 +62,7 @@ def auth():
         code = request.args['code']
         res_json = exchange_code(code)
 
-        return make_response("""<script type="javascript/json">function done() { try { window.opener.getCode(\"""" + str(b64e(str(res_json).encode())) + """\") } catch (err) {} window.close(); return false; } </script><body onload="done();">Authorized</body>""", 200)
+        return make_response("""<script type="text/javascript">function done() { try { window.opener.getCode(\"""" + str(b64e(str(res_json).encode())) + """\") } catch (err) {} return false; } </script><body onload="done();">Authorized</body>""", 200)
     
     else:
         return make_response("Forbidden", 403)
