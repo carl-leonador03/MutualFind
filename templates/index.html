@@ -105,15 +105,21 @@
             }
 
             function onSelectChange() {
-                document.getElementById("guild_select").disabled = true;
+                let select_div = document.getElementById("guild_select");
+                select_div.disabled = true;
                 let loading_div = document.getElementById("loading_div");
                 loading_div.hidden = false;
                 loading_div.classList.add("fadeMe");
+
+                (async () =>  await fetchMutualResults(
+                    select_div.children[select_div.selectedIndex].value
+                ));
+
             }
 
-            async function fetchMutualResults() {
+            async function fetchMutualResults(guild_id) {
                 const bot_token = await fetch(
-                    "{{ url_for('fetch') }}" + "?bot_token",
+                    "{{ url_for('fetch') }}" + "?guild_id=" + guild_id,
                     {
                         method: "GET",
                         headers: {
@@ -122,11 +128,9 @@
                     }
                 ).then(
                    function (response) { return response.json() }
-                ).then(
-                    (json) => { result = json["BOT_TOKEN"] }
                 );
 
-                // do smth here brb.
+                
             }
         </script>
         <link rel="text/stylesheet" href="{{ url_for('static', filename='assets/app.css') }}">

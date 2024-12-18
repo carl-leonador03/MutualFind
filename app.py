@@ -83,6 +83,25 @@ def fetch():
 
             return jsonify(result)
         
+        elif "mutuals" in request.args:
+            if "guild_id" in request.args:
+                task1 = asyncio.run_coroutine_threadsafe(bot.get_members(request.args["guild_id"]), loop)
+                members = task1.result()
+
+                users = []
+
+                for member in members:
+                    task2 = asyncio.run_coroutine_threadsafe(bot.get_user(request.args[member]), loop)
+                    user_info = task2.result()
+                    users.append(user_info)
+                
+                task3 = asyncio.run_coroutine_threadsafe(bot.get_mutuals(users, request.args["guild_id"]), loop)
+                return jsonify(task3.result())
+
+            else:
+                return jsonify({"Missing argument": "guild_id not given."})
+
+        
         elif "bot_token" in request.args:
             if "result" in request.cookies.keys():
                 if loads(str(b64d(request.cookies["result"]), encoding="utf-8").replace("'", "\""))["access_token"]:

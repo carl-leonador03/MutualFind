@@ -1,32 +1,38 @@
-import requests
-import asyncio
-import os
+class Processor:
+    def __init__(self, users: list, current_guild: str):
+        self.__users__ = users
+        self.current_guild = current_guild
+    
+    def get_mutuals(self):
+        mutual_servers_dict = {}
+        for user in self.__users__:
+            if user["bot"] == False:
+                mutual_servers = user.mutual_guilds
+                mutual_servers.remove(self.current_guild)
 
-API_ENDPOINT = "https://discord.com/api/v10/"
-BOT_TOKEN = os.environ["BOT_TOKEN"]
-
-def get_user_info(user_token, user_id):
-    headers = {
-        "Authorization": "Bearer " + user_token,
-        "Accept-Type": "application/json"
-    }
-
-    user_info = requests.get(
-        API_ENDPOINT + "users/" + user_id + "/profile",
-        headers = headers
-    )
-
-    return user_info.json()
-
-def get_guild_info(guild_id):
-    headers = {
-        "Authorization": f"Bot {BOT_TOKEN}",
-        "Accept-Type": "application/json"
-    }
-
-    guild_info = requests.get(
-        API_ENDPOINT + "guilds/" + guild_id,
-        headers = headers
-    )
-
-    return guild_info.json()
+                if len(mutual_servers) < 2:
+                    if mutual_servers[0] not in mutual_servers_dict.keys():
+                        mutual_servers_dict[mutual_servers[0]] = []
+                    mutual_servers_dict[mutual_servers[0]].append(
+                        {
+                            "name": user["name"],
+                            "id": user["id"],
+                            "global_name": user["global_name"],
+                            "avatar": user["avatar"]
+                        }
+                    )
+                else:
+                    for mutual_server in mutual_servers:
+                        if mutual_server not in mutual_servers_dict.keys():
+                            mutual_servers_dict[mutual_server] = []
+                        mutual_servers_dict[mutual_server].append(
+                            {
+                                "name": user["name"],
+                                "id": user["id"],
+                                "global_name": user["global_name"],
+                                "avatar": user["avatar"]
+                            }
+                        )
+            
+        return mutual_servers_dict
+    

@@ -2,6 +2,7 @@ import discord
 import os
 
 from discord import app_commands
+from processor import Processor
 
 intents = discord.Intents.default()
 intents.members = True
@@ -39,26 +40,21 @@ async def get_user(user_id):
         "avatar": (userObj.avatar.key if userObj.avatar != None else None)
     }
 
-"""@tree.command(name="mutuals", description="Retrieves a summary of mutual servers found in current server.")
+async def get_mutuals(member_list: list, guild_id):
+    proc = Processor(member_list, guild_id)
+    return proc.get_mutuals()
+
+@tree.command(name="mutuals", description="Retrieves a summary of mutual servers found in current server.")
 async def mutuals_command(
     interaction: discord.Interaction,
     hidden: bool = False
     ):
-
-    wait_embed = discord.Embed(title="MutualFind", description="Working, please wait...")
-    wait_embed.set_thumbnail(url="https://carlleonador03.pythonanywhere.com/embed/assets/mutuals_loading.gif")
-
-    await ctx.send(embed=wait_embed)
-    await interaction.response.defer()
-    
     embed = discord.Embed(title="MutualFind", description="Summary of our findings in this server:")
-    embed.set_thumbnail(url="https://carlleonador03.pythonanywhere.com/embed/assets/mutuals_thumbnail.png")
+    embed.set_thumbnail(url="https://mutualfind.koyeb.app/static/assets/mutuals_thumbnail.png")
     #embed.add_field(name="Top 5 Servers you're mutual with:", value=" ", inline=True)
     embed.add_field(name="Mutual Members")
 
-    channel = ctx.channel
-
-    await ctx.edit_message()"""
+    await interaction.response.send_message(embed=embed, ephemeral=hidden)
 
 async def start_bot():
     await client.start(os.environ["BOT_TOKEN"])
