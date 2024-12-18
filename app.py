@@ -52,8 +52,7 @@ def auth():
         scopes = [
             'guilds',
             'guilds.members.read',
-            'identify',
-            'relationships.read'
+            'identify'
         ]
 
         auth_url = "https://discord.com/oauth2/authorize"
