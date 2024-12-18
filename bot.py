@@ -51,7 +51,7 @@ async def mutuals_command(
     hidden: bool = False
     ):
     embed = discord.Embed(title="MutualFind", description="Summary of our findings in this server:")
-    embed.set_thumbnail(url="https://mutualfind.koyeb.app/static/assets/mutuals_thumbnail.png")
+    #embed.set_thumbnail(url="https://mutualfind.koyeb.app/static/assets/mutuals_thumbnail.png")
     #embed.add_field(name="Top 5 Servers you're mutual with:", value=" ", inline=True)
     embed.add_field(name="Mutual Members")
 
