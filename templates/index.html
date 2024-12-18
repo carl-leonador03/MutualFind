@@ -26,11 +26,14 @@
                     result_data = JSON.parse(result);
                     console.log("Authorized");
 
+                    document.getElementById("authButton").innerText = "Authorized";
+
                     (async() => await getGuilds(result_data))();
 
                     return true;
                 }
                 else {
+                    document.getElementById("authButton").innerText = "Unauthorized";
                     return false;
                 }
                 
@@ -100,12 +103,23 @@
                 document.cookie = "result=" + code;
                 console.log(code);
             }
+
+            function onSelectChange() {
+                document.getElementById("guild_select").disabled = true;
+                let loading_div = document.getElementById("loading_div");
+                loading_div.hidden = false;
+                loading_div.classList
+            }
         </script>
+        <link rel="text/stylesheet" href="{{ url_for('static', filename='assets/app.css') }}">
     </head>
     <body>
-        <button onClick="openAuthWin();">Authorize</button>
+        <button id="authButton" onClick="openAuthWin();">Authorize</button>
         <div id="guild_select_div">
-            <select name="guilds" id="guild_select"></select>
+            <select onchange="onSelectChange();" name="guilds" id="guild_select"></select>
+        </div>
+        <div id="loading_div" hidden>
+            <img src="{{ url_for('static', filename='assets/typing.gif') }}" width="100px" height="auto"> Processing...
         </div>
     </body>
 </html>
