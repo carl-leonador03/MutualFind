@@ -52,7 +52,8 @@ def auth():
         scopes = [
             'guilds',
             'guilds.members.read',
-            'identify'
+            'identify',
+            'relationships.read'
         ]
 
         auth_url = "https://discord.com/oauth2/authorize"
@@ -73,6 +74,12 @@ def fetch():
     if request.method == "GET":
         if "guild_id" in request.args:
             task = asyncio.run_coroutine_threadsafe(bot.get_members(request.args["guild_id"]), loop)
+            result = task.result()
+
+            return jsonify(result)
+        
+        elif "user_id" in request.args:
+            task = asyncio.run_coroutine_threadsafe(bot.get_user(request.args["user_id"]), loop)
             result = task.result()
 
             return jsonify(result)

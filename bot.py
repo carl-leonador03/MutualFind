@@ -27,6 +27,18 @@ async def get_members(guild_id):
     
     return members
 
+async def get_user(user_id):
+    """Coroutine to fetch user details via user id."""
+    userObj = await client.get_user(int(user_id))
+    return {
+        "name": userObj.name,
+        "id": userObj.id,
+        "global_name": userObj.global_name,
+        "bot": userObj.bot,
+        "mutual_guilds": [g.id for g in userObj.mutual_guilds],
+        "avatar": userObj.avatar.url
+    }
+
 """@tree.command(name="mutuals", description="Retrieves a summary of mutual servers found in current server.")
 async def mutuals_command(
     interaction: discord.Interaction,
