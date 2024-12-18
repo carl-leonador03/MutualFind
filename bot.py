@@ -36,7 +36,7 @@ async def get_user(user_id):
         "global_name": userObj.global_name,
         "bot": userObj.bot,
         "mutual_guilds": [g.id for g in userObj.mutual_guilds],
-        "avatar": userObj.avatar.key or None
+        "avatar": (userObj.avatar.key if userObj.avatar != None else None)
     }
 
 """@tree.command(name="mutuals", description="Retrieves a summary of mutual servers found in current server.")
