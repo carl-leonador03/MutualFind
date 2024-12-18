@@ -6,6 +6,8 @@
             var authWin;
             var authTimer;
             var result_data;
+            const token;
+            
             function openAuthWin() {
                 authWin = window.open('{{ url_for("auth") }}', 'Authorize', 'width=616,height=770');
                 authTimer = setInterval( function() {
@@ -25,7 +27,7 @@
                     result_data = JSON.parse(result);
                     console.log("Authorized");
 
-                    getGuilds(result_data);
+                    (async() => await getGuilds(result_data))();
 
                     return true;
                 }
@@ -35,8 +37,8 @@
                 
             }
 
-            function getGuilds(result_data) {
-                let user_guilds = fetch(
+            async function getGuilds(result_data) {
+                let user_guilds = await fetch(
                     "https://discord.com/api/v10/users/@me/guilds",
                     {
                         method: "GET",
@@ -48,7 +50,7 @@
                 ).then((response) => response.json());
 
                 let bot_token = null;
-                let response_json = fetch(
+                await fetch(
                     "{{ url_for('fetch') }}" + "?bot_token",
                     {
                         method: "GET",
@@ -57,18 +59,14 @@
                         }
                     }
                 ).then(
-                    (response) => { bot_token = response.json() }
-                );
-                
-                response_json.then(
+                   function (response) => { return response.json() }
+                ).then(
                     (json) => { bot_token = json["BOT_TOKEN"] }
-                )
-
-                // let bot_token = process.env.BOT_TOKEN;
+                );
 
                 console.log(bot_token);
 
-                let bot_guilds = fetch(
+                let bot_guilds = await fetch(
                     "https://discord.com/api/v10/users/@me/guilds",
                     {
                         method: "GET",
@@ -103,30 +101,6 @@
                 document.cookie = "result=" + code;
                 console.log(code);
             }
-
-            /* function isAuthorized() {
-                let result = window.atob(document.cookie.split(";")[document.cookie.split(";").length - 1].split("=")[1]);
-                if (result != undefined) {
-                    let user_guilds = fetch(
-                        "https://discord.com/api/v10/users/@me/guilds",
-                        {
-                            method: "GET",
-                            headers: {
-                                "Authorization": result,
-                                "Content-Type": "application/json"
-                            }
-                        }
-                    ).then((response) => response.json())
-
-                    let guild_select = document.getElementById("guild_select");
-
-                    for (var guild of user_guilds) {
-                        let guild_option = document.createElement("select");
-                        guild_option.value = guild.id;
-                        guild_option.text = 
-                    }
-                }
-            } */
         </script>
     </head>
     <body>
