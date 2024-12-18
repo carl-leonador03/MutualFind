@@ -47,7 +47,7 @@
                     }
                 ).then((response) => response.json());
 
-                /* let bot_token = fetch(
+                let bot_token = fetch(
                     "{{ url_for('fetch') }}" + "?bot_token",
                     {
                         method: "GET",
@@ -59,9 +59,9 @@
                     (response) => response.json()
                 ).then(
                     (json) => bot_token = json["BOT_TOKEN"]
-                );*/
+                );
 
-                let bot_token = process.env.BOT_TOKEN;
+                // let bot_token = process.env.BOT_TOKEN;
 
                 console.log(bot_token);
 
