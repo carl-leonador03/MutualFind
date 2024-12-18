@@ -11,6 +11,7 @@ tree = app_commands.CommandTree(client)
 
 @client.event
 async def on_ready():
+    await tree.sync()
     print("[i] Bot is online. Happy mutuals finding!")
 
 @client.event
