@@ -85,7 +85,7 @@
                 for (let guild of user_guilds) {
                     let guild_option = document.createElement("select");
                     guild_option.value = guild.id;
-                    guild_option.text = guild.name;
+                    guild_option.innerText = guild.name;
                     if (!bot_guilds.includes(guild.id)) {
                         guild_option.disabled = true;
                     }
