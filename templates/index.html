@@ -108,7 +108,25 @@
                 document.getElementById("guild_select").disabled = true;
                 let loading_div = document.getElementById("loading_div");
                 loading_div.hidden = false;
-                loading_div.classList
+                loading_div.classList.add("fadeMe");
+            }
+
+            async function fetchMutualResults() {
+                const bot_token = await fetch(
+                    "{{ url_for('fetch') }}" + "?bot_token",
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    }
+                ).then(
+                   function (response) { return response.json() }
+                ).then(
+                    (json) => { result = json["BOT_TOKEN"] }
+                );
+
+                // do smth here brb.
             }
         </script>
         <link rel="text/stylesheet" href="{{ url_for('static', filename='assets/app.css') }}">
@@ -120,6 +138,9 @@
         </div>
         <div id="loading_div" hidden>
             <img src="{{ url_for('static', filename='assets/typing.gif') }}" width="100px" height="auto"> Processing...
+        </div>
+        <div id="results" hidden>
+            results go here...
         </div>
     </body>
 </html>
