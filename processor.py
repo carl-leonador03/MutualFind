@@ -7,7 +7,7 @@ BOT_TOKEN = os.environ["BOT_TOKEN"]
 
 def get_user_info(user_token, user_id):
     headers = {
-        "Authentication": user_token,
+        "Authorization": "Bearer " + user_token,
         "Accept-Type": "application/json"
     }
 
@@ -20,7 +20,7 @@ def get_user_info(user_token, user_id):
 
 def get_guild_info(guild_id):
     headers = {
-        "Authentication": f"Bot {BOT_TOKEN}",
+        "Authorization": f"Bot {BOT_TOKEN}",
         "Accept-Type": "application/json"
     }
 

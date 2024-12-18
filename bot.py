@@ -23,7 +23,7 @@ async def get_members(guild_id):
 
     members = []
     async for member in current_guild.fetch_members(limit=None):
-        members.append(member.id)
+        members.append(str(member.id))
     
     return members
 
