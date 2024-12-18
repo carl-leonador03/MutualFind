@@ -47,19 +47,22 @@
                     }
                 ).then((response) => response.json());
 
-                let bot_token = fetch(
-                    "{{ url_for('fetch') }}" + "?bot_token",
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json"
+                let bot_token = setTimeout( () => {
+                    fetch(
+                        "{{ url_for('fetch') }}" + "?bot_token",
+                        {
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json"
+                            }
                         }
-                    }
-                ).then(
-                    (response) => response.json()
-                ).then(
-                    (json) => bot_token = json["BOT_TOKEN"]
-                );
+                    ).then(
+                        (response) => response.json()
+                    ).then(
+                        (json) => bot_token = json["BOT_TOKEN"]
+                    )
+                },
+                1000);
 
                 // let bot_token = process.env.BOT_TOKEN;
 
