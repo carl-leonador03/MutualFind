@@ -83,7 +83,7 @@
                 let guild_select = document.getElementById("guild_select");
 
                 for (let guild of user_guilds) {
-                    let guild_option = document.createElement("select");
+                    let guild_option = document.createElement("option");
                     guild_option.value = guild.id;
                     guild_option.innerText = guild.name;
                     if (!bot_guilds.includes(guild.id)) {
