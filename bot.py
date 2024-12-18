@@ -29,7 +29,7 @@ async def get_members(guild_id):
 
 async def get_user(user_id):
     """Coroutine to fetch user details via user id."""
-    userObj = await client.get_user(int(user_id))
+    userObj = await client.fetch_user(int(user_id))
     return {
         "name": userObj.name,
         "id": userObj.id,
