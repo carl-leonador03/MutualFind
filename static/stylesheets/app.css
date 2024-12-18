@@ -1,0 +1,16 @@
+.fadeMe {
+	animation: fadeIn 1s linear;
+}
+
+@keyframes fadeIn {
+	0% {
+		opacity: 0
+	}
+	100% {
+		opacity: 1
+	}
+}
+
+.fadeMe.none {
+	display: none
+}
