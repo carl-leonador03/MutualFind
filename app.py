@@ -82,8 +82,7 @@ def fetch():
                 users = []
 
                 for member in members:
-                    print(member)
-                    task2 = asyncio.run_coroutine_threadsafe(bot.get_user(request.args[member]), loop)
+                    task2 = asyncio.run_coroutine_threadsafe(bot.get_user(member), loop)
                     user_info = task2.result()
                     print(user_info)
                     users.append(user_info)
