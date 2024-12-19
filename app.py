@@ -75,6 +75,8 @@ def fetch():
             if "guild_id" in request.args:
                 task1 = asyncio.run_coroutine_threadsafe(bot.get_members(request.args["guild_id"]), loop)
                 members = task1.result()
+                
+                print("[i] task1 completed.")
 
                 users = []
 
@@ -82,6 +84,8 @@ def fetch():
                     task2 = asyncio.run_coroutine_threadsafe(bot.get_user(request.args[member]), loop)
                     user_info = task2.result()
                     users.append(user_info)
+                
+                print("[i] task2 completed.")
                 
                 task3 = asyncio.run_coroutine_threadsafe(bot.get_mutuals(users, request.args["guild_id"]), loop)
                 return jsonify(task3.result())
