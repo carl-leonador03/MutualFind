@@ -77,12 +77,15 @@ def fetch():
                 members = task1.result()
                 
                 print("[i] task1 completed.")
+                print(members)
 
                 users = []
 
                 for member in members:
+                    print(member)
                     task2 = asyncio.run_coroutine_threadsafe(bot.get_user(request.args[member]), loop)
                     user_info = task2.result()
+                    print(user_info)
                     users.append(user_info)
                 
                 print("[i] task2 completed.")
