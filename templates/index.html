@@ -138,10 +138,12 @@
     <body>
         <button id="authButton" onClick="openAuthWin();">Authorize</button>
         <div id="guild_select_div">
-            <select onchange="onSelectChange();" name="guilds" id="guild_select"></select>
+            <select onchange="onSelectChange();" name="guilds" id="guild_select">
+                <option selected>Select a server</option>
+            </select>
         </div>
         <div id="loading_div" hidden>
-            <img src="{{ url_for('static', filename='assets/typing.gif') }}" width="100px" height="auto"> Processing...
+            <img src="{{ url_for('static', filename='assets/typing.gif') }}" width="32px" height="auto"> Processing...
         </div>
         <div id="results" hidden>
             results go here...
