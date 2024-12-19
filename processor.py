@@ -7,7 +7,7 @@ class Processor:
         mutual_servers_dict = {}
         for user in self.__users__:
             if user["bot"] == False:
-                mutual_servers = user.mutual_guilds
+                mutual_servers = user["mutual_guilds"]
                 mutual_servers.remove(self.current_guild)
 
                 if len(mutual_servers) < 2:
