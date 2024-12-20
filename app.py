@@ -4,6 +4,8 @@ from base64 import b64decode as b64d, b64encode as b64e
 from flask import Flask, request, jsonify, render_template, make_response, redirect, url_for
 from json import loads
 
+from flask_bootstrap import Bootstrap
+
 import os
 import bot
 import asyncio, threading
@@ -14,6 +16,7 @@ CLIENT_SECRET = os.environ["CLIENT_SECRET"]
 REDIRECT_URI = "https://mutualfind.koyeb.app/authorize"
 
 app = Flask(__name__)
+bootstrap = Bootstrap(app)
 
 def exchange_code(code):
     data = {
