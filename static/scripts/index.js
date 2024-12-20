@@ -108,7 +108,7 @@ function onSelectChange() {
 
     (async () =>  await fetchMutualResults(
         select_div.children[select_div.selectedIndex].value
-    ));
+    ))();
 
 }
 
