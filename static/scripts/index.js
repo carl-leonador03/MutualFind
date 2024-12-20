@@ -3,7 +3,7 @@ var authTimer;
 var result_data;
 
 function openAuthWin() {
-    authWin = window.open('{{ url_for("auth") }}', 'Authorize', 'width=616,height=770');
+    authWin = window.open('/auth', 'Authorize', 'width=616,height=770');
     authTimer = setInterval( function() {
         if (authWin.closed) {
             clearInterval(authTimer);
