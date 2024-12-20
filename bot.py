@@ -45,6 +45,9 @@ async def get_mutuals(member_list: list, guild_id):
     proc = Processor(member_list, guild_id)
     return proc.get_mutuals()
 
+async def get_guild_info(guild_id):
+    return await client.fetch_guild(guild_id)
+
 @tree.command(name="mutuals", description="Retrieves a summary of mutual servers found in current server.")
 async def mutuals_command(
     interaction: discord.Interaction,
