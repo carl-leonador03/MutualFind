@@ -8,8 +8,7 @@ class Processor:
         for user in self.__users__:
             if user["bot"] == False:
                 mutual_servers = user["mutual_guilds"]
-                _ = mutual_servers.pop(self.current_guild)
-
+                _ = (mutual_servers.pop(mutual_servers.index(self.current_guild)) if self.current_guild in mutual_servers else None)
                 if len(mutual_servers) < 2:
                     if mutual_servers[0] not in mutual_servers_dict.keys():
                         mutual_servers_dict[mutual_servers[0]] = []
