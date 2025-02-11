@@ -156,7 +156,7 @@ async function fetchMutualResults(guild_id) {
             console.log(user);
             const mutual_user = document.createElement("div");
             const mutual_user_pfp = document.createElement("img");
-            mutual_user_pfp.src = user['avatar'];
+            mutual_user_pfp.src = current_guild.BASE + '/icons/' + current_guild.id + '/' + user.avatar + '.webp';
             mutual_user_pfp.width = 32;
             mutual_user_pfp.height = 32;
 
