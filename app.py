@@ -100,7 +100,11 @@ def fetch():
                 task = asyncio.run_coroutine_threadsafe(bot.get_guild_info(request.args["guild_id"]), loop)
                 result = task.result()
 
-                return jsonify(result)
+                try:
+                    return jsonify(result)
+                except TypeError:
+                    print(result, dir(result))
+                    return jsonify('Something went wrong.')
             
             else:
                 return jsonify({"Missing argument": "guild_id not given."})
