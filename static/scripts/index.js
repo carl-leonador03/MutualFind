@@ -128,7 +128,7 @@ async function fetchMutualResults(guild_id) {
 
     const results = document.getElementById("results");
 
-    for (let server in mutual_servers) {
+    for (let server of mutual_servers) {
         const current_guild = await fetch(
             "/fetch?guild&guild_id=" + guild_id,
             {
@@ -152,7 +152,7 @@ async function fetchMutualResults(guild_id) {
         server_.appendChild(server_pfp);
         server_.appendChild(server_name);
 
-        for (let user in mutuals[server]) {
+        for (let user of mutuals[server]) {
             const mutual_user = document.createElement("div");
             const mutual_user_pfp = document.createElement("img");
             mutual_user_pfp.src = user['avatar'];
