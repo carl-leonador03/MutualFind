@@ -114,7 +114,7 @@ function onSelectChange() {
 
 async function fetchMutualResults(guild_id) {
     const mutuals = await fetch(
-        "/fetch?mutuals&guild_id" + guild_id,
+        "/fetch?mutuals&guild_id=" + guild_id,
         {
             method: "GET",
             headers: {
@@ -136,7 +136,7 @@ async function fetchMutualResults(guild_id) {
             }
         ).then((response) => response.json());
 
-        const server = document.createElement("div");
+        const server_ = document.createElement("div");
         const server_pfp = document.createElement("img");
         server_pfp.src = "https://cdn.discordapp.com/icons/" + current_guild.id + "/" + current_guild.icon.key + ".webp";
         server_pfp.width = 32;
@@ -145,8 +145,8 @@ async function fetchMutualResults(guild_id) {
         const server_name = document.createElement("h2");
         server_name.innerText = current_guild.name;
 
-        server.appendChild(server_pfp);
-        server.appendChild(server_name);
+        server_.appendChild(server_pfp);
+        server_.appendChild(server_name);
 
         for (let user in mutuals[server]) {
             const mutual_user = document.createElement("div");
