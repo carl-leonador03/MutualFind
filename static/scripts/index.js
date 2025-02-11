@@ -125,6 +125,8 @@ async function fetchMutualResults(guild_id) {
 
     const mutual_servers = Object.keys(mutuals);
 
+    const results = document.getElementById("results");
+
     for (let server in mutual_servers) {
         const current_guild = await fetch(
             "/fetch?guild&guild_id=" + guild_id,
@@ -157,9 +159,9 @@ async function fetchMutualResults(guild_id) {
             mutual_user_pfp.height = 32;
 
             mutual_user.innerHTML.appendChild(mutual_user_pfp);
-            mutual_user_name = document.createElement("div");
-            mutual_user_global_name = document.createElement("p");
-            mutual_user_username = document.createElement("p");
+            const mutual_user_name = document.createElement("div");
+            const mutual_user_global_name = document.createElement("p");
+            const mutual_user_username = document.createElement("p");
             mutual_user_global_name.innerText = user["global_name"];
             mutual_user_username.innerHTML = user["name"];
 
@@ -168,7 +170,9 @@ async function fetchMutualResults(guild_id) {
             mutual_user_name.appendChild(mutual_user_username);
 
             mutual_user.appendChild(mutual_user_name);
-            server.appendChild(mutual_user);
+            server_.appendChild(mutual_user);
         }
+
+        results.appendChild(server_);
     }
 }
