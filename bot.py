@@ -49,7 +49,7 @@ async def get_guild_info(guild_id):
     guild_info =  await client.fetch_guild(guild_id)
     jsonified_info = {}
 
-    jsonified_info['id'] = guild_info.id
+    jsonified_info['id'] = guild_id
     jsonified_info['name'] = guild_info.name
     jsonified_info['icon'] = {
         'BASE': guild_info.icon.BASE,
