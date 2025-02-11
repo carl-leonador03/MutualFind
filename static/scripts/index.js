@@ -124,6 +124,7 @@ async function fetchMutualResults(guild_id) {
     ).then((response) => response.json());
 
     const mutual_servers = Object.keys(mutuals);
+    console.log(mutual_servers);
 
     const results = document.getElementById("results");
 
