@@ -46,7 +46,19 @@ async def get_mutuals(member_list: list, guild_id):
     return proc.get_mutuals()
 
 async def get_guild_info(guild_id):
-    return await client.fetch_guild(guild_id)
+    guild_info =  await client.fetch_guild(guild_id)
+    jsonified_info = {}
+
+    jsonified_info['id'] = guild_info.id
+    jsonified_info['name'] = guild_info.name
+    jsonified_info['icon'] = {
+        'BASE': guild_info.icon.BASE,
+        'is_animated': guild_info.icon.is_animated(),
+        'key': guild_info.icon.key,
+        'url': guild_info.icon.url
+    }
+
+    return jsonified_info
 
 @tree.command(name="mutuals", description="Retrieves a summary of mutual servers found in current server.")
 async def mutuals_command(
