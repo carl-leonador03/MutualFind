@@ -34,7 +34,7 @@ async def get_user(user_id):
     userObj = await client.fetch_user(int(user_id))
     return {
         "name": userObj.name,
-        "id": userObj.id,
+        "id": user_id,
         "global_name": userObj.global_name,
         "bot": userObj.bot,
         "mutual_guilds": [g.id for g in userObj.mutual_guilds],
