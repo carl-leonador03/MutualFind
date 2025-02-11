@@ -160,7 +160,7 @@ async function fetchMutualResults(guild_id) {
             mutual_user_pfp.width = 32;
             mutual_user_pfp.height = 32;
 
-            mutual_user.innerHTML.appendChild(mutual_user_pfp);
+            mutual_user.appendChild(mutual_user_pfp);
             const mutual_user_name = document.createElement("div");
             const mutual_user_global_name = document.createElement("p");
             const mutual_user_username = document.createElement("p");
