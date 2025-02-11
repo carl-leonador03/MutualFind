@@ -153,6 +153,7 @@ async function fetchMutualResults(guild_id) {
         server_.appendChild(server_name);
 
         for (let user of mutuals[server]) {
+            console.log(user);
             const mutual_user = document.createElement("div");
             const mutual_user_pfp = document.createElement("img");
             mutual_user_pfp.src = user['avatar'];
@@ -175,5 +176,6 @@ async function fetchMutualResults(guild_id) {
         }
 
         results.appendChild(server_);
+        results.removeAttribute('hidden'); 
     }
 }
