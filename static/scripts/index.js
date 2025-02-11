@@ -130,7 +130,7 @@ async function fetchMutualResults(guild_id) {
 
     for (let server of mutual_servers) {
         const current_guild = await fetch(
-            "/fetch?guild&guild_id=" + guild_id,
+            "/fetch?guild&guild_id=" + server,
             {
                 method: "GET",
                 headers: {
@@ -141,6 +141,7 @@ async function fetchMutualResults(guild_id) {
 
         const server_ = document.createElement("div");
         const server_pfp = document.createElement("img");
+        console.log(server);
         console.log(current_guild);
         server_pfp.src = "https://cdn.discordapp.com/icons/" + current_guild.id + "/" + current_guild.icon.key + ".webp";
         server_pfp.width = 32;
@@ -152,7 +153,7 @@ async function fetchMutualResults(guild_id) {
         server_.appendChild(server_pfp);
         server_.appendChild(server_name);
 
-        for (let user of mutuals[server]) {
+        for (let user of mutuals.server) {
             console.log(user);
             const mutual_user = document.createElement("div");
             const mutual_user_pfp = document.createElement("img");
@@ -164,8 +165,8 @@ async function fetchMutualResults(guild_id) {
             const mutual_user_name = document.createElement("div");
             const mutual_user_global_name = document.createElement("p");
             const mutual_user_username = document.createElement("p");
-            mutual_user_global_name.innerText = user["global_name"];
-            mutual_user_username.innerHTML = user["name"];
+            mutual_user_global_name.innerText = user.global_name;
+            mutual_user_username.innerHTML = user.name;
 
             mutual_user_name.appendChild(mutual_user_global_name);
             mutual_user_name.appendChild(document.createElement("br"));
