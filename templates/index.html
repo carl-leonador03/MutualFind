@@ -1,24 +1,22 @@
-{% extends "bootstrap/base.html" %}
-{% block head %}
-{% block title %}MutualFind{% endblock %}
-{% block scripts %}
-<script src="{{ url_for('static', filename='scripts/index.js') }}"></script>
-{% endblock %}
-{% block styles %}
-<link rel="text/stylesheet" href="{{ url_for('static', filename='assets/app.css') }}">
-{% endblock %}
-{% endblock %}
-{% block body %}
-<button id="authButton" onClick="openAuthWin();">Authorize</button>
-<div id="guild_select_div">
-    <select onchange="onSelectChange();" name="guilds" id="guild_select">
-        <option selected>Select a server</option>
-    </select>
-</div>
-<div id="loading_div" hidden>
-    <img src="{{ url_for('static', filename='assets/typing.gif') }}" width="32px" height="auto"> Processing...
-</div>
-<div id="results" hidden>
-    results go here...
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MutualFind</title>
+        <script src="{{ url_for('static', filename='scripts/index.js') }}"></script>
+        <link rel="text/stylesheet" href="{{ url_for('static', filename='assets/app.css') }}">
+    </head>
+    <body>
+        <button id="authButton" onClick="openAuthWin();">Authorize</button>
+        <div id="guild_select_div">
+            <select onchange="onSelectChange();" name="guilds" id="guild_select">
+                <option selected>Select a server</option>
+            </select>
+        </div>
+        <div id="loading_div" hidden>
+            <img src="{{ url_for('static', filename='assets/typing.gif') }}" width="32px" height="auto"> Processing...
+        </div>
+        <div id="results" hidden>
+            results go here...
+        </div>
+    </body>
+</html>
