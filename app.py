@@ -94,6 +94,16 @@ def fetch():
             
             else:
                 return jsonify({"Missing argument": "guild_id not given."})
+        
+        elif "guild" in request.args:
+            if "guild_id" in request.args:
+                task = asyncio.run_coroutine_threadsafe(bot.get_guild_info(request.args["guild_id"]), loop)
+                result = task.result()
+
+                return jsonify(result)
+            
+            else:
+                return jsonify({"Missing argument": "guild_id not given."})
             
         elif "guild_id" in request.args:
             task = asyncio.run_coroutine_threadsafe(bot.get_members(request.args["guild_id"]), loop)
@@ -116,16 +126,6 @@ def fetch():
                     return jsonify({"Forbidden": 403})
             else:
                 return jsonify({"Forbidden": 403})
-        
-        elif "guild" in request.args:
-            if "guild_id" in request.args:
-                task = asyncio.run_coroutine_threadsafe(bot.get_guild_info(request.args["guild_id"]), loop)
-                result = task.result()
-
-                return jsonify(result)
-            
-            else:
-                return jsonify({"Missing argument": "guild_id not given."})
         
         else:
             return jsonify({"Missing argument": "guild_id not given."})
