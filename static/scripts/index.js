@@ -138,7 +138,7 @@ async function fetchMutualResults(guild_id) {
 
         const server_ = document.createElement("div");
         const server_pfp = document.createElement("img");
-        console.log(current_guild.icon);
+        console.log(current_guild);
         server_pfp.src = "https://cdn.discordapp.com/icons/" + current_guild.id + "/" + current_guild.icon.key + ".webp";
         server_pfp.width = 32;
         server_pfp.height = 32;
