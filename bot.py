@@ -51,11 +51,18 @@ async def get_guild_info(guild_id):
 
     jsonified_info['id'] = guild_id
     jsonified_info['name'] = guild_info.name
-    jsonified_info['icon'] = {
-        'is_animated': guild_info.icon.is_animated(),
-        'key': guild_info.icon.key,
-        'url': guild_info.icon.url
-    }
+    try:
+        jsonified_info['icon'] = {
+            'is_animated': guild_info.icon.is_animated(),
+            'key': guild_info.icon.key,
+            'url': guild_info.icon.url
+        }
+    except AttributeError:
+        jsonified_info['icon'] = {
+            'is_animated': False,
+            'key': guild_info.icon.key,
+            'url': guild_info.icon.url
+        }
 
     return jsonified_info
 
