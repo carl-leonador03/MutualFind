@@ -45,6 +45,10 @@ async def get_mutuals(member_list: list, guild_id):
     proc = Processor(member_list, guild_id)
     return proc.get_mutuals()
 
+async def sort_mutuals_users(mutual_servers_dict: dict):
+    sorted_users = Processor.group_mutual_users(None, mutual_servers_dict)
+    return sorted_users
+
 async def get_guild_info(guild_id):
     guild_info =  await client.fetch_guild(guild_id)
     jsonified_info = {}

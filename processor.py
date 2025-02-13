@@ -35,3 +35,24 @@ class Processor:
             
         return mutual_servers_dict
     
+    @staticmethod
+    def group_mutual_users(cls, mutual_servers_dict: dict = None):
+        if mutual_servers_dict == None:
+            mutual_servers_dict = self.get_mutuals()
+        
+        users = {}
+
+        for guild_id in mutual_servers_dict:
+            for user in mutual_servers_dict[guild_id]:
+                if user['name'] in users:
+                    users[user['name']]['guilds'].append(guild_id)
+
+                else:
+                    users[user['name']] = user
+                    
+                    if "guilds" not in users[user['name']]:
+                        users[user['name']]['guilds'] = []
+                    
+                    users[user['name']]['guilds'].append(guild_id)
+
+        return users

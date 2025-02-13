@@ -90,7 +90,15 @@ def fetch():
                 print("[i] task2 completed.")
                 
                 task3 = asyncio.run_coroutine_threadsafe(bot.get_mutuals(users, request.args["guild_id"]), loop)
-                return jsonify(task3.result())
+                mutuals = task3.result()
+                
+                if "sort" in request.args and request.args['sort'] == 'users':
+                    task4 = asyncio.run_coroutine_threadsafe(bot.sort_mutuals_users(mutuals), loop)
+                    sorted_users = task4.result()
+
+                    return jsonify(sorted_users)
+                else:
+                    return jsonify(mutuals)
             
             else:
                 return jsonify({"Missing argument": "guild_id not given."})
