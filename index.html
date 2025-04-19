@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MutualFind</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"/>
+  <style>
+    body {
+      background: url("/static/assets/jusko.jpg") no-repeat center center fixed;
+      background-size: cover;
+    }
+  </style>
+</head>
+<body class="h-screen flex items-center justify-center font-sans">
+  <div class="bg-white bg-opacity-90 rounded-2xl shadow-lg p-10 w-full max-w-md text-center backdrop-blur-sm">
+    <h1 class="text-3xl font-bold mb-2 text-gray-800">MutualFind</h1>
+    <p class="text-gray-600 mb-6">Discover Shared Servers & Communities!!</p>
+
+    <!-- Authorize Button -->
+    <button id="authorizeBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded mb-4 transition">
+      Authorize
+    </button>
+
+    <!-- Server Dropdown -->
+    <select id="serverDropdown" class="w-full border border-gray-300 rounded px-4 py-2 mb-6 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400">
+      <option disabled selected>Select a server</option>
+    </select>
+
+    <!-- Sorting Dropdown -->
+    <label for="sortDropdown" class="block font-semibold text-gray-700 mb-1 text-left">Sort mutuals by:</label>
+    <select id="sortDropdown" class="w-full border border-gray-300 rounded px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400">
+      <option value="username">Username (A-Z)</option>
+      <option value="username-rev">Username (Z-A)</option>
+      <option value="id">User ID (ascending)</option>
+      <option value="id-rev">User ID (descending)</option>
+    </select>
+  </div>
+
+  <script src="/static/scripts/index.js"></script>
+</body>
+</html>
