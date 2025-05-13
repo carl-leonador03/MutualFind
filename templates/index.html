@@ -1,350 +1,194 @@
-<html lang="en" style="font-family: 'Poppins', sans-serif;">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <title>MutualFind - Find Shared Discord Communities</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MutualFind</title>
+    <script src="{{ url_for('static', filename='scripts/index.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/app.css') }}">
     <style>
-      body {
-        font-family: 'Poppins', sans-serif;
-        background-color: #f7fafc;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-      }
-
-      .container {
-        margin: 2rem auto;
-        padding: 1rem;
-        max-width: 900px;
-      }
-
-      header {
-        text-align: center;
-        margin-bottom: 2.5rem;
-      }
-
-      h1 {
-        font-size: 2.5rem;
-        font-weight: 800;
-        color: #4c51bf;
-      }
-
-      p {
-        margin-top: 1rem;
-        font-size: 1.125rem;
-        color: #4c51bf;
-      }
-
-      .section {
-        background-color: white;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        border-radius: 0.375rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      }
-
-      h2 {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: #4b5563;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        margin-bottom: 1.5rem;
-      }
-
-      .btn-primary {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        padding: 0.75rem 1.25rem;
-        background-color: #4c51bf;
-        color: white;
-        font-weight: 600;
-        border-radius: 0.375rem;
-        width: 100%;
-        max-width: 14rem;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        border: none;
-      }
-
-      .btn-primary:hover {
-        background-color: #3b40a5;
-      }
-
-      .btn-primary:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
-
-      .select-wrapper {
-        position: relative;
-      }
-
-      select {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        border: 1px solid #d1d5db;
-        border-radius: 0.375rem;
-        background-color: white;
-        color: #4b5563;
-        cursor: pointer;
-        font-size: 1rem;
-      }
-
-      .loading-select {
-        position: absolute;
-        top: 0;
-        right: 0.75rem;
-        display: none;
-      }
-
-      .loading-select svg {
-        width: 1.25rem;
-        height: 1.25rem;
-        animation: spin 1s infinite linear;
-      }
-
-      .loading-select.show {
-        display: block;
-      }
-
-      .results-container {
-        margin-top: 2rem;
-      }
-
-      .result-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 1rem;
-        margin-bottom: 1rem;
-        background-color: white;
-        border-radius: 0.375rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      }
-
-      .result-item .result-icon {
-        width: 2.5rem;
-        height: 2.5rem;
-        border-radius: 9999px;
-        background-color: #4c51bf;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-      }
-
-      .result-item .result-info {
-        margin-left: 1rem;
-        flex-grow: 1;
-      }
-
-      .result-name {
-        font-size: 1.125rem;
-        font-weight: 600;
-        color: #4b5563;
-      }
-
-      .result-members {
-        font-size: 0.875rem;
-        color: #6b7280;
-      }
-
-      .result-count {
-        font-size: 1.125rem;
-        font-weight: 600;
-        color: #4c51bf;
-      }
-
-      .no-results {
-        text-align: center;
-        color: #6b7280;
-      }
-
-      .footer {
-        background-color: #4c51bf;
-        color: white;
-        text-align: center;
-        padding: 1rem;
-        font-size: 0.875rem;
-      }
-
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
+        /* Basic styles for the application */
+        body {
+            font-family: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #36393f;
+            color: #dcddde;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        100% {
-          transform: rotate(360deg);
+        
+        button {
+            background-color: #5865f2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 10px 0;
+            transition: background-color 0.2s;
         }
-      }
+        
+        button:hover {
+            background-color: #4752c4;
+        }
+        
+        button:disabled {
+            background-color: #72767d;
+            cursor: not-allowed;
+        }
+        
+        select {
+            background-color: #2f3136;
+            color: #dcddde;
+            border: none;
+            border-radius: 4px;
+            padding: 8px;
+            width: 100%;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        
+        select:disabled {
+            opacity: 0.7;
+        }
+        
+        #loading_div {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+            font-size: 16px;
+        }
+        
+        .fadeMe {
+            animation: fadeIn 0.5s infinite alternate;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0.5; }
+            to { opacity: 1; }
+        }
+        
+        #results {
+            margin-top: 20px;
+        }
+        
+        .sort-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .server-container {
+            background-color: #2f3136;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 15px;
+        }
+        
+        .server-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #40444b;
+            padding-bottom: 10px;
+        }
+        
+        .server-icon {
+            border-radius: 50%;
+        }
+        
+        .server-name {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .members-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 10px;
+        }
+        
+        .mutual-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #36393f;
+            border-radius: 4px;
+            padding: 8px;
+        }
+        
+        .user-avatar {
+            border-radius: 50%;
+        }
+        
+        .user-name-container p {
+            margin: 0;
+        }
+        
+        .global-name {
+            font-weight: 600;
+        }
+        
+        .username {
+            color: #b9bbbe;
+            font-size: 12px;
+        }
+        
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #40444b;
+            padding-bottom: 15px;
+        }
+        
+        .app-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 20px;
+            background-color: #2f3136;
+            border-radius: 8px;
+        }
+        
+        .error {
+            color: #ed4245;
+            padding: 10px;
+            background-color: rgba(237, 66, 69, 0.1);
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
     </style>
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        checkAuthStatus();
-
-        const authBtn = document.getElementById('authButton');
-        const guildSelect = document.getElementById('guild_select');
-
-        if (authBtn) authBtn.addEventListener('click', openAuthWin);
-        if (guildSelect) guildSelect.addEventListener('change', onSelectChange);
-      });
-
-      function checkAuthStatus() {
-        const userToken = localStorage.getItem('discordToken');
-        if (userToken) {
-          const authStep = document.getElementById('auth-step');
-          authStep.classList.add('authenticated');
-          const btnText = document.querySelector('.btn-text');
-          btnText.textContent = 'Authenticated';
-          const authButton = document.getElementById('authButton');
-          authButton.classList.add('btn-success');
-          authButton.disabled = true;
-
-          fetchUserGuilds();
-        }
-      }
-
-      function showToast(message, type = 'success') {
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i> ${message}`;
-        document.body.appendChild(toast);
-
-        setTimeout(() => {
-          toast.style.opacity = '0';
-          toast.style.transform = 'translateX(100%)';
-          setTimeout(() => {
-            if (toast.parentNode) toast.parentNode.removeChild(toast);
-          }, 300);
-        }, 3000);
-      }
-
-      function fetchUserGuilds() {
-        const selectWrapper = document.querySelector('.select-wrapper');
-        selectWrapper.classList.add('loading-select');
-        setTimeout(() => {
-          selectWrapper.classList.remove('loading-select');
-          const guildSelect = document.getElementById('guild_select');
-          guildSelect.innerHTML = `
-            <option selected disabled>Select a server</option>
-            <option value="1">Gaming Hub</option>
-            <option value="2">Music Lovers</option>
-            <option value="3">Art Community</option>
-            <option value="4">Tech Talk</option>
-            <option value="5">Book Club</option>
-            <option value="6">Fitness Freaks</option>
-            <option value="7">Movie Buffs</option>
-            <option value="8">Anime Fans</option>
-            <option value="9">Photography</option>
-            <option value="10">Cooking Corner</option>
-            <option value="11">Travelers</option>
-            <option value="12">Science Geeks</option>
-            <option value="13">Language Exchange</option>
-            <option value="14">Crypto Chat</option>
-            <option value="15">Coding Ninjas</option>
-          `;
-        }, 1500);
-      }
-
-      function displayResults(results) {
-        const resultsContainer = document.getElementById('results');
-        resultsContainer.innerHTML = '';
-        resultsContainer.hidden = false;
-
-        if (results && results.length > 0) {
-          results.forEach((result, index) => {
-            const resultItem = document.createElement('div');
-            resultItem.className = 'result-item';
-            resultItem.style.animationDelay = `${index * 0.1}s`;
-
-            resultItem.innerHTML = `
-              <div class="result-icon">
-                ${result.icon || result.name.charAt(0)}
-              </div>
-              <div class="result-info">
-                <div class="result-name">${result.name}</div>
-                <div class="result-members">${result.memberCount.toLocaleString()} members</div>
-              </div>
-              <div class="result-count">${result.mutualCount.toLocaleString()}</div>
-            `;
-
-            resultsContainer.appendChild(resultItem);
-          });
-        } else {
-          resultsContainer.innerHTML = `
-            <div class="no-results">
-              <i class="fas fa-search fa-3x mb-3"></i>
-              <h3 class="text-xl font-semibold mb-1">No mutual servers found</h3>
-              <p>Try selecting a different server</p>
-            </div>
-          `;
-        }
-      }
-
-      function openAuthWin() {
-        showToast('Opening Discord authentication window...', 'info');
-      }
-
-      function onSelectChange() {
-        const guildSelect = document.getElementById('guild_select');
-        const selectedValue = guildSelect.value;
-        if (!selectedValue || selectedValue === 'Select a server') {
-          return;
-        }
-        const loadingDiv = document.getElementById('loading_div');
-        loadingDiv.hidden = false;
-
-        setTimeout(() => {
-          loadingDiv.hidden = true;
-          const dummyResults = [
-            { name: "Gaming Hub", memberCount: 12000, mutualCount: 350, icon: '<img src="https://placehold.co/40x40/png?text=GH" alt="Gaming Hub server icon" class="rounded-full w-10 h-10 object-cover" />' },
-            { name: "Music Lovers", memberCount: 8500, mutualCount: 210, icon: '<img src="https://placehold.co/40x40/png?text=ML" alt="Music Lovers server icon" class="rounded-full w-10 h-10 object-cover" />' },
-            { name: "Art Community", memberCount: 4300, mutualCount: 120, icon: '<img src="https://placehold.co/40x40/png?text=AC" alt="Art Community server icon" class="rounded-full w-10 h-10 object-cover" />' },
-            { name: "Tech Talk", memberCount: 15000, mutualCount: 500, icon: '<img src="https://placehold.co/40x40/png?text=TT" alt="Tech Talk server icon" class="rounded-full w-10 h-10 object-cover" />' },
-            { name: "Book Club", memberCount: 3200, mutualCount: 90, icon: '<img src="https://placehold.co/40x40/png?text=BC" alt="Book Club server icon" class="rounded-full w-10 h-10 object-cover" />' }
-          ];
-          displayResults(dummyResults);
-        }, 2000);
-      }
-    </script>
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <h1>MutualFind</h1>
-        <p>Discover shared Discord communities</p>
-      </header>
-      <section class="section" id="auth-step">
-        <h2><i class="fas fa-sign-in-alt"></i> Authentication</h2>
-        <p>Connect to Discord to find mutual servers with other members.</p>
-        <button class="btn-primary" id="authButton"><i class="fab fa-discord"></i><span class="btn-text">Connect with Discord</span></button>
-      </section>
-      <section class="section">
-        <h2><i class="fas fa-server"></i> Select Server</h2>
-        <p>Choose a server to find mutual members.</p>
-        <div class="select-wrapper">
-          <select id="guild_select" name="guilds">
-            <option selected>Select a server</option>
-          </select>
-          <div class="loading-select" id="loading_div">
-            <svg class="animate-spin h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" fill="currentColor"></path>
-            </svg>
-          </div>
-        </div>
-      </section>
-      <section class="results-container" id="results"></section>
+</head>
+<body>
+    <div class="app-header">
+        <h1 class="app-title">MutualFind</h1>
+        <button id="authButton" onClick="openAuthWin();">Authorize</button>
     </div>
-    <footer class="footer">
-      <p>MutualFind © 2025 | Not affiliated with Discord Inc.</p>
-    </footer>
-  </body>
+    
+    <div class="app-content">
+        <div id="guild_select_div">
+            <select onchange="onSelectChange();" name="guilds" id="guild_select">
+                <option selected>Select a server</option>
+            </select>
+        </div>
+        
+        <div id="loading_div" hidden>
+            <img src="{{ url_for('static', filename='assets/typing.gif') }}" width="32px" height="auto"> Processing...
+        </div>
+        
+        <div id="results" hidden>
+            <!-- Results will be inserted here by JavaScript -->
+        </div>
+    </div>
+</body>
 </html>
-
