@@ -1,0 +1,344 @@
+var authWin;
+var authTimer;
+var result_data;
+
+function openAuthWin() {
+    authWin = window.open('/authorize', 'Authorize', 'width=616,height=770');
+    authTimer = setInterval(function() {
+        if (authWin.closed) {
+            clearInterval(authTimer);
+            isAuthorized();
+        }
+    }, 1000);
+}
+
+function isAuthorized() {
+    let result = document.cookie.split(";")[document.cookie.split(";").length - 1].split("=")[1];
+    if (result != null) {
+        result = window.atob(result);
+        result = result.replaceAll("'", "\"");
+        result_data = JSON.parse(result);
+        console.log("Authorized");
+
+        document.getElementById("authButton").innerText = "Authorized";
+
+        // Get user guilds
+        (async() => await getGuilds(result_data))();
+
+        return true;
+    }
+    else {
+        document.getElementById("authButton").innerText = "Unauthorized";
+        return false;
+    }
+}
+
+async function getGuilds(result_data) {
+
+    let user_guilds = await fetch(
+        "https://discord.com/api/v10/users/@me/guilds",
+        {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + result_data["access_token"],
+                "Content-Type": "application/json"
+            }
+        }
+    ).then((response) => response.json());
+
+    let bot_token = null;
+    await fetch(
+        "/fetch?bot_token",
+        {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+    ).then(
+        function (response) { return response.json() }
+    ).then(
+        (json) => { bot_token = json["BOT_TOKEN"] }
+    );
+
+    console.log(bot_token);
+
+
+    let bot_guilds = await fetch(
+        "https://discord.com/api/v10/users/@me/guilds",
+        {
+            method: "GET",
+            headers: {
+                "Authorization": "Bot " + bot_token,
+                "Content-Type": "application/json"
+            }
+        }
+    ).then(
+        (response) => response.json()
+    );
+
+    bot_guilds = bot_guilds.map((x) => {return x.id;});
+
+    let guild_select = document.getElementById("guild_select");
+
+ 
+    while (guild_select.options.length > 1) {
+        guild_select.remove(1);
+    }
+
+    for (let guild of user_guilds) {
+        let guild_option = document.createElement("option");
+        guild_option.value = guild.id;
+        guild_option.innerText = guild.name;
+        if (!bot_guilds.includes(guild.id)) {
+            guild_option.disabled = true;
+        }
+        guild_select.appendChild(guild_option);
+    }
+
+    return "done";
+}
+
+function getCode(result) {
+    let code = result.replace("b'", "").replace("'", "")
+    document.cookie = "result=" + code;
+    console.log(code);
+}
+
+
+function onSelectChange() {
+    let select_div = document.getElementById("guild_select");
+    select_div.disabled = true;
+    let loading_div = document.getElementById("loading_div");
+    loading_div.hidden = false;
+    loading_div.classList.add("fadeMe");
+
+    document.getElementById("results").innerHTML = "";
+    document.getElementById("results").hidden = true;
+
+    (async () => await fetchMutualResults(
+        select_div.children[select_div.selectedIndex].value
+    ))();
+}
+
+
+async function fetchMutualResults(guild_id) {
+    try {
+
+        const mutuals = await fetch(
+            "/fetch?mutuals&guild_id=" + guild_id,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }
+        ).then((response) => response.json());
+
+        const mutual_servers = Object.keys(mutuals);
+        console.log(mutual_servers);
+
+        const results = document.getElementById("results");
+        
+     
+        if (mutual_servers.length === 0) {
+            const noResults = document.createElement("div");
+            noResults.className = "no-results";
+            noResults.innerText = "No mutual members found.";
+            results.appendChild(noResults);
+        } else {
+            const sortControls = document.createElement("div");
+            sortControls.className = "sort-controls";
+            
+            const sortByServerBtn = document.createElement("button");
+            sortByServerBtn.innerText = "Sort by Server";
+            sortByServerBtn.onclick = () => sortResults(mutuals, "server");
+            
+            const sortByUserBtn = document.createElement("button");
+            sortByUserBtn.innerText = "Sort by Username";
+            sortByUserBtn.onclick = () => sortResults(mutuals, "username");
+            
+            sortControls.appendChild(sortByServerBtn);
+            sortControls.appendChild(sortByUserBtn);
+            results.appendChild(sortControls);
+
+            const resultsContainer = document.createElement("div");
+            resultsContainer.id = "results-container";
+            results.appendChild(resultsContainer);
+            
+            await displayMutualResults(mutuals, mutual_servers, resultsContainer);
+        }
+        
+        results.hidden = false;
+        document.getElementById("guild_select").disabled = false;
+        
+        const loadingDiv = document.getElementById("loading_div");
+        loadingDiv.hidden = true;
+        loadingDiv.classList.remove("fadeMe");
+    } catch (error) {
+        console.error("Error fetching mutual results:", error);
+        const results = document.getElementById("results");
+        results.innerHTML = `
+            <div class="error">Error fetching mutual results. Please try again.</div>
+            <button onclick="onSelectChange()">Retry</button>
+        `;
+        results.hidden = false;
+        
+       
+        const loadingDiv = document.getElementById("loading_div");
+        loadingDiv.hidden = true;
+        loadingDiv.classList.remove("fadeMe");
+        
+        document.getElementById("guild_select").disabled = false;
+    }
+}
+
+async function displayMutualResults(mutuals, mutual_servers, container) {
+    
+    container.innerHTML = "";
+ 
+    for (let server of mutual_servers) {
+      
+        const current_guild = await fetch(
+            "/fetch?guild&guild_id=" + server,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }
+        ).then((response) => response.json());
+
+        const server_ = document.createElement("div");
+        server_.className = "server-container";
+        
+        const serverHeader = document.createElement("div");
+        serverHeader.className = "server-header";
+        
+        const server_pfp = document.createElement("img");
+        server_pfp.src = "https://cdn.discordapp.com/icons/" + current_guild.id + "/" + current_guild.icon.key + ".webp";
+        server_pfp.width = 32;
+        server_pfp.height = 32;
+        server_pfp.className = "server-icon";
+
+        const server_name = document.createElement("h2");
+        server_name.innerText = current_guild.name;
+        server_name.className = "server-name";
+
+        serverHeader.appendChild(server_pfp);
+        serverHeader.appendChild(server_name);
+        server_.appendChild(serverHeader);
+        
+
+        const membersContainer = document.createElement("div");
+        membersContainer.className = "members-container";
+        
+
+        for (let user of mutuals[server]) {
+            const mutual_user = document.createElement("div");
+            mutual_user.className = "mutual-user";
+            
+  
+            const mutual_user_pfp = document.createElement("img");
+            mutual_user_pfp.src = 'https://cdn.discordapp.com/avatars/' + user.id + '/' + user.avatar + '.webp';
+            mutual_user_pfp.width = 32;
+            mutual_user_pfp.height = 32;
+            mutual_user_pfp.className = "user-avatar";
+            mutual_user.appendChild(mutual_user_pfp);
+            
+            // User name container
+            const mutual_user_name = document.createElement("div");
+            mutual_user_name.className = "user-name-container";
+            
+            // Global name and username
+            const mutual_user_global_name = document.createElement("p");
+            mutual_user_global_name.innerText = user.global_name;
+            mutual_user_global_name.className = "global-name";
+            
+            const mutual_user_username = document.createElement("p");
+            mutual_user_username.innerHTML = user.name;
+            mutual_user_username.className = "username";
+
+            mutual_user_name.appendChild(mutual_user_global_name);
+            mutual_user_name.appendChild(document.createElement("br"));
+            mutual_user_name.appendChild(mutual_user_username);
+
+            mutual_user.appendChild(mutual_user_name);
+            membersContainer.appendChild(mutual_user);
+        }
+        
+        server_.appendChild(membersContainer);
+        container.appendChild(server_);
+    }
+}
+
+function sortResults(mutuals, sortBy) {
+    const resultsContainer = document.getElementById("results-container");
+    const loadingDiv = document.getElementById("loading_div");
+    
+    loadingDiv.hidden = false;
+    loadingDiv.classList.add("fadeMe");
+    
+
+    resultsContainer.hidden = true;
+    
+    setTimeout(async () => {
+        try {
+            const mutual_servers = Object.keys(mutuals);
+            
+            if (sortBy === "server") {
+     
+                mutual_servers.sort(async (a, b) => {
+                    const guildA = await fetch(`/fetch?guild&guild_id=${a}`).then(r => r.json());
+                    const guildB = await fetch(`/fetch?guild&guild_id=${b}`).then(r => r.json());
+                    return guildA.name.localeCompare(guildB.name);
+                });
+            } else if (sortBy === "username") {
+                let allUsers = [];
+                for (let server of mutual_servers) {
+                    const users = mutuals[server].map(user => ({
+                        ...user,
+                        serverId: server
+                    }));
+                    allUsers = [...allUsers, ...users];
+                }
+                
+                allUsers.sort((a, b) => {
+                    const nameA = a.global_name || a.name;
+                    const nameB = b.global_name || b.name;
+                    return nameA.localeCompare(nameB);
+                });
+
+                const sortedMutuals = {};
+                for (let user of allUsers) {
+                    if (!sortedMutuals[user.serverId]) {
+                        sortedMutuals[user.serverId] = [];
+                    }
+
+                    const { serverId, ...userData } = user;
+                    sortedMutuals[user.serverId].push(userData);
+                }
+                
+                mutuals = sortedMutuals;
+            }
+
+            await displayMutualResults(mutuals, mutual_servers, resultsContainer);
+
+            resultsContainer.hidden = false;
+        } catch (error) {
+            console.error("Error sorting results:", error);
+            resultsContainer.innerHTML = `
+                <div class="error">Error sorting results. Please try again.</div>
+                <button onclick="sortResults('${sortBy}')">Retry</button>
+            `;
+        } finally {
+
+            loadingDiv.hidden = true;
+            loadingDiv.classList.remove("fadeMe");
+        }
+    }, 100); 
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    isAuthorized();
+});
