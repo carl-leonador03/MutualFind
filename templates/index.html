@@ -54,7 +54,7 @@
         }
         
         #loading_div {
-            display: flex;
+            display: none;
             align-items: center;
             gap: 10px;
             margin: 15px 0;
@@ -182,7 +182,7 @@
             </select>
         </div>
         
-        <div id="loading_div" hidden>
+        <div id="loading_div">
             <img src="{{ url_for('static', filename='assets/typing.gif') }}" width="32px" height="auto"> Processing...
         </div>
         
