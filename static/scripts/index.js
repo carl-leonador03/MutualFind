@@ -103,7 +103,7 @@ function onSelectChange() {
     let select_div = document.getElementById("guild_select");
     select_div.disabled = true;
     let loading_div = document.getElementById("loading_div");
-    loading_div.hidden = false;
+    loading_div.style.display = "block";
     loading_div.classList.add("fadeMe");
 
     (async () =>  await fetchMutualResults(
@@ -177,6 +177,6 @@ async function fetchMutualResults(guild_id) {
         }
 
         results.appendChild(server_);
-        results.removeAttribute('hidden'); 
+        results.style.display = "block";
     }
 }
